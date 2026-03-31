@@ -14,7 +14,7 @@ import base64
 # ============================================================
 # CONFIG
 # ============================================================
-st.set_page_config(page_title="STC Services Pharma — Analyse", layout="wide", page_icon="📊")
+st.set_page_config(page_title="STC Services Pharma -Analyse", layout="wide", page_icon="📊")
 
 # ============================================================
 # AUTHENTIFICATION
@@ -47,7 +47,7 @@ def login():
     if os.path.exists(_logo_login):
         st.image(_logo_login, width=130)
     st.markdown("## STC Services Pharma")
-    st.markdown("*Tableau de bord — Analyse portefeuille clients*")
+    st.markdown("*Tableau de bord -Analyse portefeuille clients*")
     st.markdown("---")
     st.markdown("</div>", unsafe_allow_html=True)
 
@@ -75,15 +75,15 @@ if not st.session_state["authenticated"]:
 
 # Palette neutre
 C = {
-    "primary": "#2563EB",       # bleu — donnees principales, 2025, actif
-    "secondary": "#94A3B8",     # gris — donnees secondaires, 2024, comparaison
-    "positive": "#16A34A",      # vert — croissance, bon
-    "warning": "#D97706",       # ambre — attention, baisse
-    "danger": "#DC2626",        # rouge — critique, perdu
-    "neutral": "#475569",       # gris fonce — texte, barres neutres
-    "light": "#E2E8F0",        # gris clair — fonds
-    "accent1": "#7C3AED",      # violet — nouveaux, special
-    "accent2": "#0891B2",      # cyan — stable
+    "primary": "#2563EB",       # bleu -donnees principales, 2025, actif
+    "secondary": "#94A3B8",     # gris -donnees secondaires, 2024, comparaison
+    "positive": "#16A34A",      # vert -croissance, bon
+    "warning": "#D97706",       # ambre -attention, baisse
+    "danger": "#DC2626",        # rouge -critique, perdu
+    "neutral": "#475569",       # gris fonce -texte, barres neutres
+    "light": "#E2E8F0",        # gris clair -fonds
+    "accent1": "#7C3AED",      # violet -nouveaux, special
+    "accent2": "#0891B2",      # cyan -stable
 }
 
 # Segments
@@ -214,7 +214,7 @@ def label_risque(score):
     return "🟢 Faible"
 
 # ============================================================
-# SIDEBAR — STYLE (inspire de servicespharma-marseille.fr)
+# SIDEBAR -STYLE (inspire de servicespharma-marseille.fr)
 # ============================================================
 st.markdown("""
 <style>
@@ -254,7 +254,7 @@ section[data-testid="stSidebar"] .stRadio > label {
     letter-spacing: 0.06em;
 }
 
-/* Radio boutons — texte normal */
+/* Radio boutons -texte normal */
 section[data-testid="stSidebar"] .stRadio div[role="radiogroup"] label span {
     color: #374151 !important;
     font-family: 'Raleway', sans-serif !important;
@@ -262,7 +262,7 @@ section[data-testid="stSidebar"] .stRadio div[role="radiogroup"] label span {
     transition: color 0.2s;
 }
 
-/* Radio bouton — hover */
+/* Radio bouton -hover */
 section[data-testid="stSidebar"] .stRadio div[role="radiogroup"] label:hover span {
     color: #76b860 !important;
 }
@@ -319,7 +319,7 @@ section[data-testid="stSidebar"] div[data-baseweb="select"] > div {
 """, unsafe_allow_html=True)
 
 # ============================================================
-# SIDEBAR — CONTENU
+# SIDEBAR -CONTENU
 # ============================================================
 _stc_logo_path = os.path.join(BASE, "logo_stc.png")
 if os.path.exists(_stc_logo_path):
@@ -517,13 +517,13 @@ if onglet == "Vue Globale":
 
     col_n, col_p = st.columns(2)
     with col_n:
-        st.markdown(f"**{nouveaux} nouveaux clients en 2025** — {ca_nouveaux:,.0f} EUR")
+        st.markdown(f"**{nouveaux} nouveaux clients en 2025** -{ca_nouveaux:,.0f} EUR")
         df_nouveaux = clients_f[nouveaux_mask].sort_values("CA_2025", ascending=False)[["Client", "Entite", "Ville", "CA_2025", "CA_Loc_2025", "CA_Vte_2025"]].reset_index(drop=True)
         st.dataframe(df_nouveaux.head(20), use_container_width=True, hide_index=True, height=350)
         csv_download(df_nouveaux, "nouveaux_clients_2025.csv")
 
     with col_p:
-        st.markdown(f"**{perdus} clients perdus en 2025** — {ca_perdus:,.0f} EUR perdus")
+        st.markdown(f"**{perdus} clients perdus en 2025** -{ca_perdus:,.0f} EUR perdus")
         df_perdus = clients_f[perdus_mask].sort_values("CA_2024", ascending=False)[["Client", "Entite", "Ville", "CA_2024", "CA_Loc_2024", "CA_Vte_2024"]].reset_index(drop=True)
         st.dataframe(df_perdus.head(20), use_container_width=True, hide_index=True, height=350)
         csv_download(df_perdus, "clients_perdus_2025.csv")
@@ -886,7 +886,7 @@ elif onglet == "Sante Portefeuille":
     tab1, tab2, tab3 = st.tabs(["Clients perdus", "Clients en baisse / a risque", "Tous les clients (niveau de risque)"])
 
     with tab1:
-        st.markdown(f"**{len(perdus_df)} clients** — CA 2024 perdu : **{ca_perdus:,.0f} EUR**")
+        st.markdown(f"**{len(perdus_df)} clients** -CA 2024 perdu : **{ca_perdus:,.0f} EUR**")
         # Ajouter info lien avec suppression commerciaux
         perdus_export = perdus_df[["Client", "Entite", "Ville", "CA_2024", "CA_Loc_2024", "CA_Vte_2024", "Derniere_Commande", "Jours_Sans_Commande"]].copy()
         perdus_export["Derniere_Commande"] = perdus_export["Derniere_Commande"].dt.strftime("%d/%m/%Y").fillna("Inconnue")
@@ -903,7 +903,7 @@ elif onglet == "Sante Portefeuille":
         csv_download(perdus_export, "clients_perdus_reconquete.csv")
 
     with tab2:
-        st.markdown(f"**{len(en_baisse)} clients** — CA a rattraper : **{ca_delta:,.0f} EUR** — Tries par niveau de risque")
+        st.markdown(f"**{len(en_baisse)} clients** -CA a rattraper : **{ca_delta:,.0f} EUR** -Tries par niveau de risque")
         df_baisse = en_baisse[["Client", "Entite", "Segment", "Niveau_Risque", "CA_2025", "CA_2024", "Delta", "Evolution_PCT", "Nb_Commandes_25", "Jours_Sans_Commande"]].reset_index(drop=True)
         df_baisse.columns = ["Client", "Entite", "Categorie", "Niveau risque", "CA 2025", "CA 2024", "CA perdu", "Evol %", "Commandes 25", "Jours sans cmd"]
         st.dataframe(df_baisse, use_container_width=True, height=400)
@@ -933,13 +933,13 @@ elif onglet == "Sante Portefeuille":
 
     al1, al2, al3, al4 = st.columns(4)
     al1.markdown(f"### 🔴 {nb_critique}")
-    al1.caption(f"Critiques — {ca_critique:,.0f} EUR")
+    al1.caption(f"Critiques -{ca_critique:,.0f} EUR")
     al2.markdown(f"### 🟠 {nb_eleve}")
-    al2.caption(f"Eleves — {ca_eleve:,.0f} EUR")
+    al2.caption(f"Eleves -{ca_eleve:,.0f} EUR")
     al3.markdown(f"### 🟡 {nb_modere}")
-    al3.caption(f"Moderes — {ca_modere:,.0f} EUR")
+    al3.caption(f"Moderes -{ca_modere:,.0f} EUR")
     al4.markdown(f"### 🟢 {nb_faible}")
-    al4.caption(f"Faibles — {ca_faible:,.0f} EUR")
+    al4.caption(f"Faibles -{ca_faible:,.0f} EUR")
 
     insight(f"**{nb_critique} clients critiques** ({ca_critique:,.0f} EUR) necessitent une action immediate (appel, visite). **{nb_eleve} clients a risque eleve** ({ca_eleve:,.0f} EUR) meritent un suivi renforce. Au total, {nb_critique + nb_eleve} clients representant {ca_critique + ca_eleve:,.0f} EUR de CA sont en zone de danger.", "⚠️")
 
@@ -1227,7 +1227,7 @@ elif onglet == "Produits & Familles":
     # --- Quels clients achetent quels rayons ? ---
     st.markdown("---")
     st.subheader("Quels clients achetent quels rayons ? (2025)")
-    st.markdown("*Pour chaque client, les rayons achetes et ceux qui manquent — utile pour cibler vos appels.*")
+    st.markdown("*Pour chaque client, les rayons achetes et ceux qui manquent -utile pour cibler vos appels.*")
 
     ventes_25 = ventes_f[ventes_f["Annee"] == 2025]
     rayons_par_client = ventes_25.groupby(["Client", "Rayon"])["Total_HT"].sum().unstack(fill_value=0)
@@ -1288,10 +1288,10 @@ elif onglet == "Produits & Familles":
     # Labels simples
     def label_effet_remise(corr):
         if corr < -0.2:
-            return "✅ OUI — remise quantite"
+            return "✅ OUI -remise quantite"
         if corr > 0.2:
-            return "⬆️ INVERSE — montee en gamme"
-        return "➖ NON — prix fixe"
+            return "⬆️ INVERSE -montee en gamme"
+        return "➖ NON -prix fixe"
 
     corr_df["Effet_Remise"] = corr_df["Corr"].apply(label_effet_remise)
 
@@ -1491,7 +1491,7 @@ elif onglet == "Opportunites":
 |--------|:------------:|:----------:|:--------:|:---------:|
 | Reconquete clients perdus | {_ca_reconquete:,.0f} EUR | 20% = {_ca_reconquete*0.20:,.0f} | 40% = {_ca_reconquete*0.40:,.0f} | 60% = {_ca_reconquete*0.60:,.0f} |
 | Rattrapage clients en baisse | {_ca_rattrapage:,.0f} EUR | 30% = {_ca_rattrapage*0.30:,.0f} | 50% = {_ca_rattrapage*0.50:,.0f} | 70% = {_ca_rattrapage*0.70:,.0f} |
-| Ventes croisees ({len(_pot_pharma)} pharmacies) | — | +1 rayon = {_ca_crosssell:,.0f} | +1 rayon = {_ca_crosssell:,.0f} | +2 rayons = {_ca_crosssell*2:,.0f} |
+| Ventes croisees ({len(_pot_pharma)} pharmacies) | -| +1 rayon = {_ca_crosssell:,.0f} | +1 rayon = {_ca_crosssell:,.0f} | +2 rayons = {_ca_crosssell*2:,.0f} |
 | **Total** | | **{_recup_pessi:,.0f}** | **{_recup_realiste:,.0f}** | **{_recup_opti:,.0f}** |
 
 *Hypotheses : les % de reconquete sont bases sur des taux de retour client classiques en B2B. Le cross-sell est calcule a {_ca_par_rayon:,.0f} EUR par rayon supplementaire (moyenne des clients 3+ rayons).*
@@ -1514,10 +1514,10 @@ elif onglet == "Opportunites":
 - Son **panier moyen** par commande
 
 **Les profils :**
-- **Champions** : fort CA, achats frequents — vos meilleurs clients, a choyer
-- **Reguliers** : CA moyen, achats reguliers — potentiel pour monter en gamme
-- **Occasionnels** : achats peu frequents — a developper en augmentant la frequence
-- **Petits acheteurs** : faible CA — peuvent etre developpes en elargissant les familles achetees
+- **Champions** : fort CA, achats frequents -vos meilleurs clients, a choyer
+- **Reguliers** : CA moyen, achats reguliers -potentiel pour monter en gamme
+- **Occasionnels** : achats peu frequents -a developper en augmentant la frequence
+- **Petits acheteurs** : faible CA -peuvent etre developpes en elargissant les familles achetees
 
 **Le graphique :**
 - Chaque point = un client
@@ -1730,7 +1730,7 @@ elif onglet == "Opportunites":
         """)
 
     st.markdown("")
-    st.markdown(f"**{len(pot_elarg)} pharmacies** ciblees — avec le detail des rayons manquants :")
+    st.markdown(f"**{len(pot_elarg)} pharmacies** ciblees -avec le detail des rayons manquants :")
 
     df_pot = pot_elarg[["Client", "Nb_Rayons", "CA_2025", "Rayons_Manquants", "Opportunite_Pessimiste", "Opportunite_Mid", "Opportunite_Optimiste"]].reset_index(drop=True)
     df_pot.columns = ["Client", "Rayons actuels", "CA 2025", "Rayons manquants (a proposer)", "Pessimiste", "Realiste", "Optimiste"]
