@@ -16,6 +16,63 @@ import base64
 # ============================================================
 st.set_page_config(page_title="STC Services Pharma — Analyse", layout="wide", page_icon="📊")
 
+# ============================================================
+# AUTHENTIFICATION
+# ============================================================
+USERS = {
+    "stc": "stc2025",
+    "admin": "admin2025",
+    "ems": "ems2025",
+}
+
+def login():
+    _logo_login = os.path.join(os.path.dirname(__file__), "logo_stc.png")
+
+    # Masquer sidebar, header, footer et bloquer le scroll
+    st.markdown("""<style>
+        [data-testid="stSidebar"] {display: none;}
+        header {display: none !important;}
+        footer {display: none !important;}
+        [data-testid="stAppViewContainer"] {
+            display: flex; align-items: center; justify-content: center;
+            min-height: 100vh; max-height: 100vh; overflow: hidden;
+        }
+        .block-container {
+            max-width: 420px !important; padding-top: 0 !important;
+            padding-bottom: 0 !important;
+        }
+    </style>""", unsafe_allow_html=True)
+
+    st.markdown("<div style='text-align:center'>", unsafe_allow_html=True)
+    if os.path.exists(_logo_login):
+        st.image(_logo_login, width=130)
+    st.markdown("## STC Services Pharma")
+    st.markdown("*Tableau de bord — Analyse portefeuille clients*")
+    st.markdown("---")
+    st.markdown("</div>", unsafe_allow_html=True)
+
+    with st.form("login_form"):
+        user = st.text_input("Identifiant")
+        pwd = st.text_input("Mot de passe", type="password")
+        submit = st.form_submit_button("Se connecter", use_container_width=True)
+
+    if submit:
+        if user in USERS and USERS[user] == pwd:
+            st.session_state["authenticated"] = True
+            st.session_state["user"] = user
+            st.rerun()
+        else:
+            st.error("Identifiant ou mot de passe incorrect.")
+
+    st.caption("Contactez votre administrateur si vous avez oublie vos identifiants.")
+
+if "authenticated" not in st.session_state:
+    st.session_state["authenticated"] = False
+
+if not st.session_state["authenticated"]:
+    login()
+    st.stop()
+
 # Palette neutre
 C = {
     "primary": "#2563EB",       # bleu — donnees principales, 2025, actif
@@ -266,6 +323,11 @@ _stc_logo_path = os.path.join(BASE, "logo_stc.png")
 if os.path.exists(_stc_logo_path):
     st.sidebar.image(_stc_logo_path, width=120)
 st.sidebar.title("STC Services Pharma")
+st.sidebar.caption(f"Connecte : **{st.session_state.get('user', '')}**")
+if st.sidebar.button("Se deconnecter", use_container_width=True):
+    st.session_state["authenticated"] = False
+    st.session_state["user"] = ""
+    st.rerun()
 st.sidebar.markdown("---")
 
 onglet = st.sidebar.radio("Navigation", [
