@@ -302,16 +302,18 @@ section[data-testid="stSidebar"] div[data-baseweb="select"] > div {
 .sidebar-logo-bottom {
     position: fixed;
     bottom: 18px;
-    width: inherit;
+    left: 0;
+    width: 300px;
     text-align: center;
     opacity: 0.55;
     transition: opacity 0.3s;
+    z-index: 999;
 }
 .sidebar-logo-bottom:hover {
     opacity: 0.9;
 }
 .sidebar-logo-bottom img {
-    width: 40px !important;
+    width: 36px !important;
 }
 </style>
 """, unsafe_allow_html=True)
