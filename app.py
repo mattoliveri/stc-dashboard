@@ -201,8 +201,16 @@ def insight(text, icon="💡"):
     st.markdown(f"""<div style="background:#F8FAFC;border-left:4px solid {C['primary']};border-radius:0 8px 8px 0;padding:14px 18px;margin:12px 0 24px 0;font-size:14px;color:#374151;line-height:1.6"><b>{icon} Interpretation :</b> {text}</div>""", unsafe_allow_html=True)
 
 def csv_download(df, filename, label="📥 Telecharger (CSV pour Excel)"):
-    csv_data = df.to_csv(index=False, sep=";").encode("utf-8-sig")
-    st.download_button(label, csv_data, file_name=filename, mime="text/csv")
+    csv_data = df.to_csv(index=False, sep=";", float_format="%.2f", decimal=",").encode("utf-8-sig")
+    xlsx_buf = io.BytesIO()
+    with pd.ExcelWriter(xlsx_buf, engine="openpyxl") as writer:
+        df.round(2).to_excel(writer, index=False, sheet_name="Export")
+    xlsx_filename = filename.rsplit(".", 1)[0] + ".xlsx"
+    c1, c2 = st.columns(2)
+    with c1:
+        st.download_button("📥 CSV", csv_data, file_name=filename, mime="text/csv", use_container_width=True)
+    with c2:
+        st.download_button("📥 Excel (.xlsx)", xlsx_buf.getvalue(), file_name=xlsx_filename, mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", use_container_width=True)
 
 def label_risque(score):
     if score >= 70:
@@ -823,7 +831,8 @@ elif onglet == "Sante Portefeuille":
     }
     df_affiche = df_affiche.rename(columns=rename_map)
     st.dataframe(df_affiche, use_container_width=True, height=450)
-    csv_download(df_affiche, f"clients_{seg_choisi.lower().replace(' ', '_')}.csv")
+    df_export = df_affiche.drop(columns=["Cmd 2025", "Familles", "Jours sans cmd"], errors="ignore")
+    csv_download(df_export, f"clients_{seg_choisi.lower().replace(' ', '_')}.csv")
 
     if seg_choisi == "A risque":
         insight(f"Ces {nb_seg} clients ont perdu plus de 30% de CA avec un impact superieur a 500 EUR. Ils representent {ca25_seg:,.0f} EUR de CA 2025 a securiser et {ca24_seg - ca25_seg:,.0f} EUR de CA perdu a rattraper.", "⚠️")
